@@ -9,6 +9,7 @@ for (int i = 2; i * i <= n; i++) {
     }
 }
 
+
 //Extended euclidean algorithm
 int gcd(int a, int b, int& x, int& y) {
     x = 1, y = 0;
@@ -21,6 +22,8 @@ int gcd(int a, int b, int& x, int& y) {
     }
     return a1;
 }
+
+
 // Diophantine (for ax+by=c) [for any solutions: x = x0 + k*g, y = y0 - k*g]
 int gcd(int a, int b, int& x, int& y) {
     if (b == 0) {
@@ -47,4 +50,36 @@ bool find_any_solution(int a, int b, int c, int &x0, int &y0, int &g) {
     if (b < 0) y0 = -y0;
     return true;
 }
+
+
+//Modular Exponentiation
+int modexp(int a, int b){
+int result = 1;
+while(s){
+if(s&1) result *= a;
+a*=a;
+s>>=1;
+}
+return result;
+}
+
+
+// Modular Inverse when a^p mod p, where p is prime (Fermats's little theorem)
+int inv(int a, int p){
+return modexp(a, p-2, p)
+}
+
+// Modular Inverse of A, when A and m are coprime
+Let a number be B such that (A*B) % m = 1, so B is then called the modular inverse of A
+so 1 = AB - qm......q is quotient(A/B)
+Here A and m is given so using extended gcd we can get a value of B
+int x, y;
+int g = gcd(A, B, x, y);
+if(g!=1) NO solution
+else{
+ans = (x%m +m)%m....m is added to avoid negative value of B
+}
+
+// nCr = n-1Cr-1 + n-1Cr
+
 
