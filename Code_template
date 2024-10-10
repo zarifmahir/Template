@@ -82,4 +82,80 @@ ans = (x%m +m)%m....m is added to avoid negative value of B
 
 // nCr = n-1Cr-1 + n-1Cr
 
+//BFS, prepare adj list first
+queue<int> q;
+int visited[n+1] // n = number of nodes
+memset(visited, 0, sizeof(visited));
+q.push(1);
+while(!q.empty()){
+int curr = q.front(); q.pop();
+if(visited[curr]) continue;
+visited[curr] = 1;
+for(int v: adj_list[curr]){
+if(visited[v]) continue;
+q.push(v);
+}
+}
+
+//Flood fill algorithm, similar to BFS
+int n, m; cin>>n>>m; [a grid of nxm]
+int x, y; cin>>x>>y; [starting from  the cell x, y]
+int vis[n+1][m+1];
+for(int i=0; i<n+1; i++) for(int j=0; j<m+1; j++) vis[i][j] = 0;
+
+vector<int> dx = {0, 0, 1, -1}
+vector<int>dy = {1, -1, 0, 0}        [these are to get the positions (i,j+1), (i, j-1), (i+1, j), (i-1, j)]
+queue<pair<int,int>> Q;
+vis[x][y] = 1; [making vis 1 before pushing in the queue]
+Q.push({x,y});
+while(!Q.empty()){
+pair<int,int> curr = Q.front();
+Q.pop();
+int i = curr.first, j= curr.second;
+for(int k=0; k<4; k++){
+int nx = i+dx[k], ny = j+dy[k];
+if(nx<1 or ny<1 or ny>m or nx>n) continue;
+if(vis[nx][ny]) continue;
+vis[nx][ny] = 1;
+Q.push({nx, ny});
+}
+}
+
+//Topological Sorting
+
+int n,m; cin>>n>>m; // n = no of nodes, m = no of edges
+vector<int> adj_list[n+1];
+vector<int> indegree[n+1];
+for(int i=0; i<m; i++){
+int u, v; cin>>u>>v;
+adj_list[u].push_back(v);
+indegree[v]++;
+}
+
+multiset<pair<int,int>> ms;
+for(int i=1; i<n+1; i++) ms.insert({indegree[i], i});
+vector<int> is_used(n+1);
+vector<int> ordering;
+
+while(!ms.empty()){
+auto root = *ms.begin();
+ms.erase(ms.begin());
+if(is_used[root.second]) continue;
+if(root.first!=0) break; // cycle is present..not DAG = Directed Acyclic Graph
+is_used[root.second] = 1;
+ordering.push_back(root.second);
+for(int v: adj_list[root.second]){
+indegree[v]--;
+ms.insert({indegree[v], v});
+}
+}
+if(ordering.size()!=n) cout<<"Not dag";
+else print ordering;
+
+//
+
+
+
+
+
 
