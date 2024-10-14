@@ -152,7 +152,53 @@ ms.insert({indegree[v], v});
 if(ordering.size()!=n) cout<<"Not dag";
 else print ordering;
 
-//
+//Floyd warshall algorithm - To find shortest paths between all pairs of nodes
+int n; cin>>n; //no of nodes
+int m; cin>>m; // no of edges
+int dist[n+1][n+1];
+
+for(int i=1; i<=n; i++){
+    for(int j=1; j<=n; j++){
+        dist[i][j] = 1e9;
+    }
+}
+
+for(int i=1; i<=n; i++) dist[i][i] = 0;
+
+for(int i=1; i<=m; i++){
+    int u, v, w; cin>>u>>v>>w;
+    dist[u][v] =  min(dist[u][v], w); // w is the edge weight, for directed graph
+}
+
+for(int k=1; k<=n; k++)
+{
+for(int i=1; i<=n; i++){
+for(int j=1; j<=n; j++){
+dist[i][j] = min(dist[i][j], dist[i][k]+dist[k][j]);
+}
+}
+} // TC: O(N3), SC: O(N2)
+
+
+// Bellman Ford Algorithm, for determining negative cycle in a graph
+
+vector<vector<int>> edge_list;
+int n, m; cin>>n>>m;
+for(int i=1; i<=m; i++){
+int u,v, w; cin>>u>>v>>w;
+edge_list.push_back({u,v,w});
+}
+
+for(int i=0; i<n; i++){
+    for(vector<int> edge: edge_list){
+    int u = edge[0], v = edge[1], w = edge[2];
+    if(dist[u]+w<dist[v]){
+    dist[v] = dist[u]+w;
+    if(i==n-1) cout<<"NEGATIVE CYCLE PRESENT"<<"\n";
+    }
+    }
+}
+
 
 
 
